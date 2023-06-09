@@ -61,12 +61,12 @@
   },
   {
     "kernelSource": {
-      "name": "IMMENSITY-X-Normal",
-      "repo": "https://github.com/UtsavBalar1231/kernel_xiaomi_sm8250",
-      "branch": "android12-stable",
-      "device": "umi"
+      "name": "DogDay-Docker",
+      "repo": "https://github.com/easterNday/kernel_xiaomi_thyme",
+      "branch": "lineage-20.0",
+      "device": "thyme"
     },
-    "withKernelSU": false,
+    "withKernelSU": true,
     "toolchains": [
       {
         "repo": "https://android.googlesource.com/platform/prebuilts/gas/linux-x86",

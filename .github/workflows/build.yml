@@ -153,7 +153,7 @@ jobs:
           args: ${{ steps.generate-args.outputs.args }}
         run: |
           echo "PATH Variable: $PATH"
-          make ${args} vendor/phoenix_ztc1997_defconfig
+          make ${args}
 
       - name: "💛 Upload Image"
         uses: actions/upload-artifact@v3

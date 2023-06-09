@@ -4,7 +4,7 @@
       "name": "MIUI",
       "repo": "https://github.com/SlackerState/android_kernel_xiaomi_sm6150",
       "branch": "phoenix-r-oss",
-      "device": "thyme"
+      "device": "vendor/phoenix_ztc1997"
     },
     "withKernelSU": true,
     "toolchains": [
@@ -33,8 +33,8 @@
     "kernelSource": {
       "name": "redcliff",
       "repo": "https://github.com/SlackerState/android_kernel_xiaomi_sm6150",
-      "branch": "phoenix-r-oss",
-      "device": "thyme"
+      "branch": "redcliff",
+      "device": "phoenix"
     },
     "withKernelSU": true,
     "toolchains": [

@@ -73,6 +73,7 @@ jobs:
             repo=$(echo $toolchains | jq -r ".[$i].repo")
             branch=$(echo $toolchains | jq -r ".[$i].branch")
             git clone --recursive --branch $branch $repo $name --depth=1
+            echo "$(pwd)/$name" >> $GITHUB_PATH
             echo "$(pwd)/$name/toolgcc/bin" >> $GITHUB_PATH
             echo "$(pwd)/$name/toolclang/clang-r428724/bin" >> $GITHUB_PATH
             echo "$(pwd)/$name/toolgcc/arm/bin" >> $GITHUB_PATH
@@ -120,6 +121,7 @@ jobs:
           OBJDUMP=$(echo $params | jq -r ".OBJDUMP")
           STRIP=$(echo $params | jq -r ".STRIP")
           LD=$(echo $params | jq -r ".LD")
+          DTC_EXT=$(echo $params | jq -r ".DTC_EXT")
 
           echo "ARCH=$ARCH" >> $GITHUB_ENV
 
@@ -163,6 +165,9 @@ jobs:
           fi
           if [ -n "$LD" ]; then
             args="$args LD=$LD"
+          fi
+          if [ -n "$DTC_EXT" ]; then
+            args="$args DTC_EXT=$DTC_EXT"
           fi
           echo "args=$args" >> $GITHUB_OUTPUT
 

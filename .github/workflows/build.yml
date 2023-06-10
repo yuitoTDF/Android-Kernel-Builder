@@ -46,6 +46,7 @@ jobs:
 
       withKernelSU: ${{ matrix.repos.withKernelSU }}
       useCustomtool: ${{ matrix.repos.useCustomtool }}
+      isConfiginvendor: ${{ matrix.repos.isConfiginvendor }}
     steps:
       - name: "✨ Create working dir"
         run: mkdir -p $kernelDir
@@ -194,6 +195,16 @@ jobs:
         working-directory: ./${{ env.kernelDir }}/${{ env.kernelName }}
         env:
           args: ${{ steps.generate-args.outputs.args }}
+        if: ${{ env.isConfiginvendor == 'true' }}
+        run: |
+          echo "PATH Variable: $PATH"
+          make ${{ env.args }} vendor/${{ env.DEFCONFIG_NAME }}
+        
+        - name: "👍 Make defconfig"
+        working-directory: ./${{ env.kernelDir }}/${{ env.kernelName }}
+        env:
+          args: ${{ steps.generate-args.outputs.args }}4
+        if: ${{ env.isConfiginvendor != 'true' }}
         run: |
           echo "PATH Variable: $PATH"
           make ${{ env.args }} ${{ env.DEFCONFIG_NAME }}

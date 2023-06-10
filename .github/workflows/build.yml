@@ -254,9 +254,9 @@ jobs:
         working-directory: ./${{ env.kernelDir }}
         run: |
           git clone https://github.com/SlackerState/AnyKernel3
-          cp "./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/Image.gz" AnyKernel3/
-          cp "./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/${{ env.dtbPath }}" AnyKernel3/
-          cp "./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/dtbo.img" AnyKernel3/
+          cp "${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/Image.gz" AnyKernel3/
+          cp "${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/${{ env.dtbPath }}" AnyKernel3/
+          cp "${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/dtbo.img" AnyKernel3/
           rm -rf AnyKernel3/.git* AnyKernel3/README.md
 
       - name: "❤️ Upload Anykernel3"

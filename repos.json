@@ -9,6 +9,7 @@
     "isConfiginvendor":true,
     "withKernelSU": true,
     "useCustomtool":true,
+    "dtbPath":"boot/dts/qcom/sdmmagpie.dtb",
     "toolchains": [
       {
         "repo": "https://github.com/SlackerState/kernel_bulid",
@@ -44,6 +45,7 @@
     "isConfiginvendor":false,
     "withKernelSU": true,
     "useCustomtool":false,
+    "dtbPath":"boot/dts/qcom/sdmmagpie.dtb",
     "toolchains": [
       {
         "repo": "https://android.googlesource.com/platform/prebuilts/gas/linux-x86",

@@ -47,6 +47,7 @@ jobs:
       withKernelSU: ${{ matrix.repos.withKernelSU }}
       useCustomtool: ${{ matrix.repos.useCustomtool }}
       isConfiginvendor: ${{ matrix.repos.isConfiginvendor }}
+      dtbPath: ${{ matrix.repos.dtbPath }}
     steps:
       - name: "✨ Create working dir"
         run: mkdir -p $kernelDir
@@ -237,7 +238,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dtb(${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }})
-          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/dtb
+          path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/${{ env.dtbPath }}
           if-no-files-found: ignore
           retention-days: 7
 
@@ -246,5 +247,22 @@ jobs:
         with:
           name: dtbo.img(${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }})
           path: ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/dtbo.img
+          if-no-files-found: ignore
+          retention-days: 7
+
+     - name: "Make Anykernel3"
+        working-directory: ./${{ env.kernelDir }}
+        run: |
+          git clone https://github.com/SlackerState/AnyKernel3
+          cp ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/Image.gz AnyKernel3/
+          cp ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/${{ env.dtbPath }} AnyKernel3/
+          cp ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/dtbo.img AnyKernel3/
+          rm -rf AnyKernel3/.git* AnyKernel3/README.md
+
+     - name: "❤️ Upload Anykernel3"
+        uses: actions/upload-artifact@v3
+        with:
+          name: Anykernel3(${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }})
+          path: ./${{ env.kernelDir }}/AnyKernel3/*
           if-no-files-found: ignore
           retention-days: 7

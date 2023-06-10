@@ -250,7 +250,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
-     - name: "Make Anykernel3"
+      - name: "Make Anykernel3"
         working-directory: ./${{ env.kernelDir }}
         run: |
           git clone https://github.com/SlackerState/AnyKernel3
@@ -259,7 +259,7 @@ jobs:
           cp ./${{ env.kernelDir }}/${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/dtbo.img AnyKernel3/
           rm -rf AnyKernel3/.git* AnyKernel3/README.md
 
-     - name: "❤️ Upload Anykernel3"
+      - name: "❤️ Upload Anykernel3"
         uses: actions/upload-artifact@v3
         with:
           name: Anykernel3(${{ env.kernelDevice }}-${{ env.kernelName }}-${{ env.kernelBranch }})

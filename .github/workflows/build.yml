@@ -45,6 +45,7 @@ jobs:
       DEFCONFIG_NAME: ${{ matrix.repos.kernelSource.device }}_defconfig
 
       withKernelSU: ${{ matrix.repos.withKernelSU }}
+      useCustomtool: ${{ matrix.repos.useCustomtool }}
     steps:
       - name: "✨ Create working dir"
         run: mkdir -p $kernelDir
@@ -59,10 +60,31 @@ jobs:
         run: |
           git clone --recursive --branch $kernelBranch $kernelRepo $kernelName --depth=1
 
+      - name: "💫 Get Customtoolchains"
+        working-directory: ./${{ env.kernelDir }}
+        env:
+          toolchains: "${{ toJSON(matrix.repos.toolchains) }}"
+        if: ${{ env.useCustomtool == 'true' }}
+        run: |
+          toolchains_num="$(echo $toolchains | jq 'length')"
+          echo $toolchains_num
+          for ((i=0;i<toolchains_num;i++)); do
+            name=$(echo $toolchains | jq -r ".[$i].name")
+            repo=$(echo $toolchains | jq -r ".[$i].repo")
+            branch=$(echo $toolchains | jq -r ".[$i].branch")
+            git clone --recursive --branch $branch $repo $name --depth=1
+            echo "$(pwd)/$name/toolgcc/bin" >> $GITHUB_PATH
+            echo "$(pwd)/$name/toolclang/clang-r428724/bin" >> $GITHUB_PATH
+            echo "$(pwd)/$name/toolgcc/arm/bin" >> $GITHUB_PATH
+          done
+
+          echo "PATH Variable: $PATH"
+
       - name: "💫 Get toolchains"
         working-directory: ./${{ env.kernelDir }}
         env:
           toolchains: "${{ toJSON(matrix.repos.toolchains) }}"
+        if: ${{ env.useCustomtool != 'true' }}
         run: |
           toolchains_num="$(echo $toolchains | jq 'length')"
           echo $toolchains_num
@@ -92,6 +114,12 @@ jobs:
           CLANG_TRIPLE=$(echo $params | jq -r ".CLANG_TRIPLE")
           AR=$(echo $params | jq -r ".AR")
           CC=$(echo $params | jq -r ".CC")
+          HOSTCXX=$(echo $params | jq -r ".HOSTCXX")
+          NM=$(echo $params | jq -r ".NM")
+          OBJCOPY=$(echo $params | jq -r ".OBJCOPY")
+          OBJDUMP=$(echo $params | jq -r ".OBJDUMP")
+          STRIP=$(echo $params | jq -r ".STRIP")
+          LD=$(echo $params | jq -r ".LD")
 
           echo "ARCH=$ARCH" >> $GITHUB_ENV
 
@@ -117,6 +145,24 @@ jobs:
           fi
           if [ -n "$CC" ]; then
             args="$args CC=$CC"
+          fi
+          if [ -n "$HOSTCXX" ]; then
+            args="$args HOSTCXX=$HOSTCXX"
+          fi
+          if [ -n "$NM" ]; then
+            args="$args NM=$NM"
+          fi
+          if [ -n "$OBJCOPY" ]; then
+            args="$args OBJCOPY=$OBJCOPY"
+          fi
+          if [ -n "$OBJDUMP" ]; then
+            args="$args OBJDUMP=$OBJDUMP"
+          fi
+          if [ -n "$STRIP" ]; then
+            args="$args STRIP=$STRIP"
+          fi
+          if [ -n "$LD" ]; then
+            args="$args LD=$LD"
           fi
           echo "args=$args" >> $GITHUB_OUTPUT
 

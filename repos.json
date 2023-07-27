@@ -6,7 +6,7 @@
       "branch": "lancelot-q-oss",
       "device": "merlin"
     },
-    "isConfiginvendor":true,
+    "isConfiginvendor":false,
     "withKernelSU": true,
     "useCustomtool":true,
     "dtbPath":"boot/dts/qcom/sdmmagpie.dtb",
